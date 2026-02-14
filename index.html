@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For My Love ❤️</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    background:radial-gradient(circle at top,#1a0033,#000);
+    font-family:'Segoe UI',sans-serif;
+    overflow:hidden;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Stars */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.2;}
+    to{opacity:1;}
+}
+
+/* Center container */
+.center{
+    text-align:center;
+    max-width:800px;
+    padding:20px;
+}
+
+/* Intro text */
+#intro{
+    font-size:28px;
+    animation:fade 3s forwards;
+}
+
+@keyframes fade{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+/* Envelope */
+#envelope{
+    font-size:110px;
+    cursor:pointer;
+    display:none;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    50%{transform:scale(1.15);}
+}
+
+/* Proposal */
+#proposal{
+    display:none;
+}
+
+button{
+    padding:15px 40px;
+    font-size:22px;
+    border:none;
+    border-radius:40px;
+    margin:20px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff4d88;
+    color:white;
+    box-shadow:0 0 25px #ff4d88;
+    transition:.3s;
+}
+
+#yes:hover{
+    transform:scale(1.2);
+}
+
+#no{
+    position:absolute;
+    background:white;
+    color:#ff4d88;
+}
+
+/* Letter */
+#letter{
+    display:none;
+    font-size:28px;
+    line-height:1.8;
+}
+
+/* typing cursor */
+.cursor{
+    border-right:3px solid white;
+    animation:blink .8s infinite;
+}
+
+@keyframes blink{
+    50%{border-color:transparent;}
+}
+
+/* glowing forever text */
+.forever{
+    font-size:32px;
+    margin-top:25px;
+    color:#ff9ecb;
+    text-shadow:0 0 20px #ff9ecb;
+    animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #ff9ecb;}
+    to{text-shadow:0 0 30px #ff9ecb;}
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="music">
+<source src="https://cdn.pixabay.com/download/audio/2022/10/03/audio_61f3b37db3.mp3">
+</audio>
+
+<div class="center">
+
+<div id="intro">
+Distance means nothing…<br>
+when someone means <b>everything</b> ❤️
+</div>
+
+<div id="envelope">💌</div>
+
+<div id="proposal">
+<h1>Will you be my Valentine? ❤️</h1>
+
+<button id="yes">YES 💖</button>
+<button id="no">NO 😜</button>
+</div>
+
+<div id="letter">
+<span id="typing"></span><span class="cursor"></span>
+<div class="forever">Forever Yours ❤️</div>
+</div>
+
+</div>
+
+<script>
+
+/* Create stars */
+for(let i=0;i<120;i++){
+    const star=document.createElement('div');
+    star.className='star';
+    star.style.left=Math.random()*100+"vw";
+    star.style.top=Math.random()*100+"vh";
+    star.style.animationDuration=(Math.random()*2+1)+"s";
+    document.body.appendChild(star);
+}
+
+/* show envelope after intro */
+setTimeout(()=>{
+    document.getElementById("envelope").style.display="block";
+},3500);
+
+/* open envelope */
+document.getElementById("envelope").onclick=()=>{
+    document.getElementById("intro").style.display="none";
+    document.getElementById("envelope").style.display="none";
+    document.getElementById("proposal").style.display="block";
+    document.getElementById("music").play();
+};
+
+/* impossible NO */
+const no=document.getElementById("no");
+
+function moveNo(){
+    no.style.left=Math.random()*(window.innerWidth-120)+"px";
+    no.style.top=Math.random()*(window.innerHeight-60)+"px";
+}
+no.addEventListener("mouseover",moveNo);
+
+/* YES clicked */
+document.getElementById("yes").onclick=(e)=>{
+
+    // heart fireworks
+    for(let i=0;i<40;i++){
+        const heart=document.createElement("div");
+        heart.innerHTML="💖";
+        heart.style.position="absolute";
+        heart.style.left=e.clientX+"px";
+        heart.style.top=e.clientY+"px";
+        heart.style.fontSize="24px";
+
+        const x=(Math.random()*500-250)+"px";
+        const y=(Math.random()*500-250)+"px";
+
+        heart.animate([
+            {transform:"translate(0,0)",opacity:1},
+            {transform:`translate(${x},${y})`,opacity:0}
+        ],{duration:1000});
+
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),1000);
+    }
+
+    document.getElementById("proposal").style.display="none";
+    document.getElementById("letter").style.display="block";
+
+    typeLetter();
+};
+
+
+/* YOUR LETTER */
+const message = `
+❤️ YOU ARE MY WORLD, SIMON RAJ ❤️
+
+From the moment you came into my life, everything started feeling brighter and more beautiful.
+
+You made my life happier than I ever thought possible.
+Whenever I see you, you make me blush and smile without even realizing it 😊
+
+I feel incredibly lucky and thankful to have you in my life.
+
+If I have ever hurt you, I am truly sorry.
+Please know it was never my intention, because your happiness means everything to me.
+
+No matter how far we are, my heart is always with you.
+I am always there for you — to support you, care for you, and love you ❤️
+
+LOVE YOU SO MUCH, MY THANGAMAY 💋💋💋
+`;
+
+let i=0;
+
+function typeLetter(){
+    if(i < message.length){
+        document.getElementById("typing").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeLetter,55); // slower = more emotional
+    }
+}
+
+</script>
+
+</body>
+</html>
